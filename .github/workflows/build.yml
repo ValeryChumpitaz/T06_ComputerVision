@@ -3,44 +3,18 @@ on:
   push:
     branches:
       - develop
- 
+  pull_request:
+    types: [opened, synchronize, reopened]
 jobs:
-  build:
-    name: Build
+  sonarcloud:
+    name: SonarCloud
     runs-on: ubuntu-latest
-    env:
-      BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
     steps:
       - uses: actions/checkout@v3
         with:
-          submodules: recursive
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Install sonar-scanner and build-wrapper
-        uses: SonarSource/sonarcloud-github-c-cpp@v1
-      - name: Run build-wrapper
-        run: |
-          mkdir build
-          cmake -S . -B build
-          build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} cmake --build build/ --config Release
-      - name: Run sonar-scanner
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }} # Put the name of your token here
-        run: |
-          sonar-scanner --define sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}"
-
-  docker_build:
-    name: Docker Build and Push
-    runs-on: ubuntu-latest
-    needs: sonarcloud_analysis
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Docker Build and Push
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}  # Nombre de usuario de Docker Hub
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  # Contraseña de Docker Hub
-        run: |
-          docker build -t yourdockerhubusername/yourimage:latest .
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker push valery2024/myapp:v1.0
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
