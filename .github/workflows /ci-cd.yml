@@ -1,24 +1,23 @@
-name: SonarCloud + Docker Hub
+name: SonarCloud  + Docker Hub
 on:
-  push:
-    branches:
+push:
+ branches:
       - develop
-
 jobs:
-  #SONARCLOUD
-  sonarcloud:
-    name: SonarCloud
+  unit-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Clone
+        uses: actions/checkout@v2
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
         with:
-          fetch-depth: 0
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
+          node-version: 14.x
+      - name: Setup
+        run: npm ci
+      - name: Test
+        run: npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+  
       #DOCKER HUB
       - name: Log in to Docker Hub
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
