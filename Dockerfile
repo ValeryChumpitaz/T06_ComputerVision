@@ -1,5 +1,7 @@
-# Etapa de compilación
-FROM node:14 AS build
+
+FROM node:14
+
+RUN mkdir -p /app
 
 WORKDIR /app
 
@@ -9,13 +11,6 @@ RUN npm install
 
 COPY . /app
 
-RUN npm run build -- --output-path=./dist/out --configuration=production
+EXPOSE 8080
 
-# Etapa de producción
-FROM nginx:alpine
-
-COPY --from=build /app/dist/out /usr/share/nginx/html
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["npm", "start"]
