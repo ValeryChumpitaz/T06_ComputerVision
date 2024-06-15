@@ -1,12 +1,12 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "cli": {
-    "analytics": "0b9c9b59-1312-4698-aa52-8c151f21fcb3"
+    "analytics": "0552af9a-cb1a-4f79-a75a-37697ffe3d13"
   },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "unit-test-angular": {
+    "ms-content-moderator": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/unit-test-angular",
+            "outputPath": "dist/ms-content-moderator",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -34,16 +34,20 @@
             ],
             "scripts": []
           },
-         
-       "configurations": {
+          "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "4mb",
-                  "maximumError": "6mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
                 },
-          
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -65,12 +69,16 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "host": "0.0.0.0",
+            "port": 4200
+          },
           "configurations": {
             "production": {
-              "browserTarget": "unit-test-angular:build:production"
+              "browserTarget": "ms-t06-computervision:build:production"
             },
             "development": {
-              "browserTarget": "unit-test-angular:build:development"
+              "browserTarget": "ms-t06-computervision:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -78,7 +86,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "unit-test-angular:build"
+            "browserTarget": "ms-t06-computervision:build"
           }
         },
         "test": {
@@ -101,5 +109,5 @@
       }
     }
   },
-  "defaultProject": "unit-test-angular"
+  "defaultProject": "ms-t06-computervision"
 }
