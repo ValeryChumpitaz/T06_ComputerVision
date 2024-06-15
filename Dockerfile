@@ -1,17 +1,23 @@
+# Usa una imagen base de Node.js
 FROM node:14
 
-RUN mkdir -p /app
-
+# Establece el directorio de trabajo
 WORKDIR /app
 
-COPY package*.json /app
+# Copia los archivos de configuración
+COPY package*.json ./
 
+# Instala las dependencias
 RUN npm install
 
-COPY . /app
+# Copia el resto del código de la aplicación
+COPY . .
 
+# Construye la aplicación en modo producción
 RUN npm run build --prod
 
-EXPOSE 4200
+# Expone el puerto en el que corre la aplicación
+EXPOSE 80
 
-ENTRYPOINT ["npm", "start"]
+# Comando por defecto para ejecutar la aplicación
+CMD ["npm", "start"]
