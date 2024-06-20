@@ -1,4 +1,4 @@
-name: SonarCloud + Docker Hub
+name: SonarCloud + Docker Hub 
 on:
   push:
     branches:
