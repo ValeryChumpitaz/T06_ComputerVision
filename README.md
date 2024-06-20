@@ -1,4 +1,4 @@
-# Proyecto # T06_ComputerVision 🌐🖥️
+# Proyecto # T06_ComputerVision 🖥️
 
 Este repositorio contiene el código fuente y la configuración necesaria para implementar un pipeline automatizado utilizando GitHub Actions para un proyecto Angular, integrando análisis estático con SonarCloud y despliegue en DockerHub.
 
